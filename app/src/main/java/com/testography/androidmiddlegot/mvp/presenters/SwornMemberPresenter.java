@@ -3,6 +3,7 @@ package com.testography.androidmiddlegot.mvp.presenters;
 import android.content.Context;
 
 import com.testography.androidmiddlegot.data.managers.DataManager;
+import com.testography.androidmiddlegot.data.storage.models.SwornMember;
 import com.testography.androidmiddlegot.mvp.models.SwornMemberModel;
 import com.testography.androidmiddlegot.mvp.views.ISwornMemberView;
 
@@ -16,6 +17,8 @@ public class SwornMemberPresenter implements ISwornMemberPresenter {
     private SwornMemberModel mSwornMemberModel;
     private WeakReference<ISwornMemberView> mSwornMemberView;
 
+    private SwornMember mSwornMember;
+
     private SwornMemberPresenter() {
         mSwornMemberModel = new SwornMemberModel();
     }
@@ -27,6 +30,8 @@ public class SwornMemberPresenter implements ISwornMemberPresenter {
     @Override
     public void takeView(ISwornMemberView swornMemberView) {
         mSwornMemberView = new WeakReference<ISwornMemberView>(swornMemberView);
+        mSwornMember = mSwornMemberModel.getSwornMember(mSwornMemberView.get()
+                .getRemoteId());
     }
 
     @Override
@@ -38,6 +43,11 @@ public class SwornMemberPresenter implements ISwornMemberPresenter {
     public void initView() {
         mSwornMemberView.get().setupToolbar();
         mSwornMemberView.get().setCollapsingToolbarLayout();
-        mSwornMemberView.get().setContent();
+        mSwornMemberView.get().setContent(mSwornMember);
+    }
+
+    @Override
+    public SwornMember getSwornMember() {
+        return null;
     }
 }

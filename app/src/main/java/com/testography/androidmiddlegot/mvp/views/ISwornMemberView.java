@@ -1,5 +1,6 @@
 package com.testography.androidmiddlegot.mvp.views;
 
+import com.testography.androidmiddlegot.data.storage.models.SwornMember;
 import com.testography.androidmiddlegot.mvp.presenters.ISwornMemberPresenter;
 
 public interface ISwornMemberView {
@@ -9,5 +10,7 @@ public interface ISwornMemberView {
 
     void setCollapsingToolbarLayout();
 
-    void setContent();
+    void setContent(SwornMember swornMember);
+
+    String getRemoteId();
 }

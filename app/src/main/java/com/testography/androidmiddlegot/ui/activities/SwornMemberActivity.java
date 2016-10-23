@@ -9,16 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.testography.androidmiddlegot.R;
-import com.testography.androidmiddlegot.data.managers.DataManager;
-import com.testography.androidmiddlegot.data.storage.models.DaoSession;
 import com.testography.androidmiddlegot.data.storage.models.SwornMember;
-import com.testography.androidmiddlegot.data.storage.models.SwornMemberDao;
 import com.testography.androidmiddlegot.mvp.presenters.ISwornMemberPresenter;
 import com.testography.androidmiddlegot.mvp.presenters.SwornMemberPresenter;
 import com.testography.androidmiddlegot.mvp.views.ISwornMemberView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,15 +52,11 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    private DaoSession mDaoSession;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sworn_member);
         ButterKnife.bind(this);
-
-        mDaoSession = DataManager.getInstance().getDaoSession();
 
         mRemoteId = getIntent().getStringExtra("remoteId");
 
@@ -76,7 +66,7 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
         mSwornMemberPresenter.initView();
     }
 
-    //region ========== Inteface Methods ==========
+    //region ========== Interface Methods ==========
 
     @Override
     public void setupToolbar() {
@@ -96,66 +86,55 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
                 .CollapsedAppBar);
     }
 
-    //endregion
+    @Override
+    public String getRemoteId() {
+        return mRemoteId;
+    }
 
     @Override
-    public void setContent() {
+    public void setContent(SwornMember swornMember) {
+        mWords.setText(setInfo(swornMember.getWords()));
+        mBorn.setText(setInfo(swornMember.getBorn()));
+        mTitles.setText(setInfo(swornMember.getTitles()));
+        mAliases.setText(setInfo(swornMember.getAliases()));
 
-        SwornMember swornMember;
-        swornMember = getSwornMemberFromDb().get(0);
+        mDied = swornMember.getDied().trim();
 
-        if (swornMember != null) {
-            mWords.setText(setInfo(swornMember.getWords().trim()));
-            mBorn.setText(setInfo(swornMember.getBorn().trim()));
-            mTitles.setText(setInfo(swornMember.getTitles().trim()));
-            mAliases.setText(setInfo(swornMember.getAliases().trim()));
-
-            mDied = swornMember.getDied().trim();
-            if (mDied.length() != 0) {
-                Snackbar.make(mCoordinatorLayout, "I died " + mDied, Snackbar
-                        .LENGTH_LONG).show();
-            }
-
-            mFather.setText(setParentName(swornMember.getFather().trim()));
-            mMother.setText(setParentName(swornMember.getMother().trim()));
-
-            CollapsingToolbarLayout toolbar = (CollapsingToolbarLayout)
-                    findViewById(R.id.collapsing_toolbar);
-            toolbar.setTitle(swornMember.getName());
+        if (mDied.length() != 0) {
+            Snackbar.make(mCoordinatorLayout, "I died " + mDied, Snackbar
+                    .LENGTH_LONG).show();
         }
-    }
 
+        mFather.setText(setParentName(swornMember.getFather()));
+        mMother.setText(setParentName(swornMember.getMother()));
 
-    private List<SwornMember> getSwornMemberFromDb() {
-        List<SwornMember> membersList = new ArrayList<>();
-
-        try {
-            membersList = mDaoSession.queryBuilder(SwornMember.class)
-                    .where(SwornMemberDao.Properties.RemoteId.eq(mRemoteId))
-                    .build()
-                    .list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return membersList;
-    }
-
-    private String setInfo(String infoFromDb) {
-        if (infoFromDb.length() == 0) {
-            return "Info not provided";
-        }
-        return infoFromDb;
-    }
-
-    private String setParentName(String infoFromDb) {
-        if (infoFromDb.length() == 0) {
-            return "Unknown";
-        }
-        return infoFromDb;
+        CollapsingToolbarLayout toolbar = (CollapsingToolbarLayout)
+                findViewById(R.id.collapsing_toolbar);
+        toolbar.setTitle(swornMember.getName());
     }
 
     @Override
     public ISwornMemberPresenter getPresenter() {
         return mSwornMemberPresenter;
     }
+
+    //endregion
+
+    //region ========== Private Methods ==========
+
+    private String setInfo(String infoFromDb) {
+        if (infoFromDb.trim().length() == 0) {
+            return "Info not provided";
+        }
+        return infoFromDb.trim();
+    }
+
+    private String setParentName(String infoFromDb) {
+        if (infoFromDb.trim().length() == 0) {
+            return "Unknown";
+        }
+        return infoFromDb.trim();
+    }
+
+    //endregion
 }
