@@ -13,6 +13,9 @@ import com.testography.androidmiddlegot.data.storage.models.House;
 import com.testography.androidmiddlegot.data.storage.models.HouseDao;
 import com.testography.androidmiddlegot.data.storage.models.SwornMember;
 import com.testography.androidmiddlegot.data.storage.models.SwornMemberDao;
+import com.testography.androidmiddlegot.mvp.presenters.ISplashScreenPresenter;
+import com.testography.androidmiddlegot.mvp.presenters.SplashScreenPresenter;
+import com.testography.androidmiddlegot.mvp.views.ISplashScreenView;
 import com.testography.androidmiddlegot.utils.AppConfig;
 import com.testography.androidmiddlegot.utils.ConstantsManager;
 import com.testography.androidmiddlegot.utils.NetworkStatusChecker;
@@ -25,7 +28,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SplashScreenActivity extends BaseActivity {
+public class SplashScreenActivity extends BaseActivity implements ISplashScreenView {
+
+    private SplashScreenPresenter mSplashScreenPresenter = SplashScreenPresenter
+            .getInstance();
 
     private DataManager mDataManager;
 
@@ -41,6 +47,9 @@ public class SplashScreenActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mSplashScreenPresenter.takeView(this);
+        mSplashScreenPresenter.initView();
 
         numberOfSessions = 0;
         mIsDelayOver = false;
@@ -134,7 +143,6 @@ public class SplashScreenActivity extends BaseActivity {
         }
     }
 
-
     private List<Integer> getSwornMembersIdFromUri(List<String> swornMembersUri) {
 
         List<Integer> result = new ArrayList<>();
@@ -158,6 +166,11 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void startPlannedDelay() {
         new PlannedDelay().execute("");
+    }
+
+    @Override
+    public ISplashScreenPresenter getPresenter() {
+        return mSplashScreenPresenter;
     }
 
     private class PlannedDelay extends AsyncTask<String, Void, String> {

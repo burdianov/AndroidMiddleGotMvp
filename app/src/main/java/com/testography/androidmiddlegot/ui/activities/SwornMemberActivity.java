@@ -52,6 +52,8 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
+    //region ========== Activity Lifecycle ==========
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,8 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
         mSwornMemberPresenter.takeView(this);
         mSwornMemberPresenter.initView();
     }
+
+    //endregion
 
     //region ========== Interface Methods ==========
 
