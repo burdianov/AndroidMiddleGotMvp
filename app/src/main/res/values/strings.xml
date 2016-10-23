@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Game of Thrones</string>
+    <string name="label_father">Father</string>
+    <string name="label_mother">Mother</string>
+    <string name="house_one">ARRYN</string>
+    <string name="house_two">BRAX</string>
+    <string name="house_three">CONNINGTON</string>
+    <string name="pick_a_house">Pick a House</string>
+    <string name="words">Words</string>
+    <string name="born">Born</string>
+    <string name="titles">Titles</string>
+    <string name="aliases">Aliases</string>
+    <string name="name">Name</string>
+    <string name="lorem_ipsum">Aliquam consectetur eleifend pharetra. Nunc pellentesque justo.</string>
+</resources>
