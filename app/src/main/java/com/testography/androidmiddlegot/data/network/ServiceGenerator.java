@@ -1,7 +1,7 @@
 package com.testography.androidmiddlegot.data.network;
 
 import com.testography.androidmiddlegot.data.network.interceptors.HeaderInterceptor;
-import com.testography.androidmiddlegot.utils.AndroidMiddleGotApplication;
+import com.testography.androidmiddlegot.utils.AndroidMiddleGotMvpApplication;
 import com.testography.androidmiddlegot.utils.AppConfig;
 
 import okhttp3.Cache;
@@ -25,7 +25,7 @@ public class ServiceGenerator {
 
         httpClient.addInterceptor(new HeaderInterceptor());
         httpClient.addInterceptor(logging);
-        httpClient.cache(new Cache(AndroidMiddleGotApplication.getContext()
+        httpClient.cache(new Cache(AndroidMiddleGotMvpApplication.getContext()
                 .getCacheDir(), Integer.MAX_VALUE));
 //        httpClient.addNetworkInterceptor(new StethoInterceptor());
 

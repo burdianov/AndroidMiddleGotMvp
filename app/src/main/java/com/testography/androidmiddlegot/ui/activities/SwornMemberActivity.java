@@ -13,75 +13,93 @@ import com.testography.androidmiddlegot.data.managers.DataManager;
 import com.testography.androidmiddlegot.data.storage.models.DaoSession;
 import com.testography.androidmiddlegot.data.storage.models.SwornMember;
 import com.testography.androidmiddlegot.data.storage.models.SwornMemberDao;
+import com.testography.androidmiddlegot.mvp.presenters.ISwornMemberPresenter;
+import com.testography.androidmiddlegot.mvp.presenters.SwornMemberPresenter;
+import com.testography.androidmiddlegot.mvp.views.ISwornMemberView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwornMemberActivity extends BaseActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private TextView mWords;
-    private TextView mBorn;
-    private TextView mTitles;
-    private TextView mAliases;
-    private TextView mFather;
-    private TextView mMother;
+public class SwornMemberActivity extends BaseActivity implements ISwornMemberView {
+
+    private SwornMemberPresenter mSwornMemberPresenter = SwornMemberPresenter
+            .getInstance();
+
+    @BindView(R.id.words_content)
+    TextView mWords;
+
+    @BindView(R.id.born_content)
+    TextView mBorn;
+
+    @BindView(R.id.titles_content)
+    TextView mTitles;
+
+    @BindView(R.id.aliases_content)
+    TextView mAliases;
+
+    @BindView(R.id.father_name)
+    TextView mFather;
+
+    @BindView(R.id.mother_name)
+    TextView mMother;
+
     private String mRemoteId;
     private String mDied;
 
-    private Toolbar mToolbar;
-    private CoordinatorLayout mCoordinatorLayout;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
+
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+
     private DaoSession mDaoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sworn_member);
-
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        ButterKnife.bind(this);
 
         mDaoSession = DataManager.getInstance().getDaoSession();
 
         mRemoteId = getIntent().getStringExtra("remoteId");
 
-        mWords = (TextView) findViewById(R.id.words_content);
-        mBorn = (TextView) findViewById(R.id.born_content);
-        mTitles = (TextView) findViewById(R.id.titles_content);
-        mAliases = (TextView) findViewById(R.id.aliases_content);
         mDied = "";
 
-        mFather = (TextView) findViewById(R.id.father_name);
-        mMother = (TextView) findViewById(R.id.mother_name);
-
-        setContent();
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setupToolbar();
-        setCollapsingToolbarLayout();
+        mSwornMemberPresenter.takeView(this);
+        mSwornMemberPresenter.initView();
     }
 
-    private void setCollapsingToolbarLayout() {
+    //region ========== Inteface Methods ==========
+
+    @Override
+    public void setupToolbar() {
+        setSupportActionBar(mToolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public void setCollapsingToolbarLayout() {
         mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style
                 .CollapsedAppBar);
     }
 
-    private List<SwornMember> getSwornMemberFromDb() {
-        List<SwornMember> membersList = new ArrayList<>();
+    //endregion
 
-        try {
-            membersList = mDaoSession.queryBuilder(SwornMember.class)
-                    .where(SwornMemberDao.Properties.RemoteId.eq(mRemoteId))
-                    .build()
-                    .list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return membersList;
-    }
-
-    private void setContent() {
+    @Override
+    public void setContent() {
 
         SwornMember swornMember;
         swornMember = getSwornMemberFromDb().get(0);
@@ -107,6 +125,21 @@ public class SwornMemberActivity extends BaseActivity {
         }
     }
 
+
+    private List<SwornMember> getSwornMemberFromDb() {
+        List<SwornMember> membersList = new ArrayList<>();
+
+        try {
+            membersList = mDaoSession.queryBuilder(SwornMember.class)
+                    .where(SwornMemberDao.Properties.RemoteId.eq(mRemoteId))
+                    .build()
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return membersList;
+    }
+
     private String setInfo(String infoFromDb) {
         if (infoFromDb.length() == 0) {
             return "Info not provided";
@@ -121,13 +154,8 @@ public class SwornMemberActivity extends BaseActivity {
         return infoFromDb;
     }
 
-    private void setupToolbar() {
-        setSupportActionBar(mToolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+    @Override
+    public ISwornMemberPresenter getPresenter() {
+        return mSwornMemberPresenter;
     }
 }

@@ -1,11 +1,13 @@
 package com.testography.androidmiddlegot.data.managers;
 
+import android.content.Context;
+
 import com.testography.androidmiddlegot.data.network.RestService;
 import com.testography.androidmiddlegot.data.network.ServiceGenerator;
 import com.testography.androidmiddlegot.data.network.res.HouseModelRes;
 import com.testography.androidmiddlegot.data.network.res.SwornMemberModelRes;
 import com.testography.androidmiddlegot.data.storage.models.DaoSession;
-import com.testography.androidmiddlegot.utils.AndroidMiddleGotApplication;
+import com.testography.androidmiddlegot.utils.AndroidMiddleGotMvpApplication;
 
 import retrofit2.Call;
 
@@ -15,9 +17,12 @@ public class DataManager {
     private RestService mRestService;
     private DaoSession mDaoSession;
 
+    private Context mAppContext;
+
     private DataManager() {
+        mAppContext = AndroidMiddleGotMvpApplication.getContext();
         mRestService = ServiceGenerator.createService(RestService.class);
-        mDaoSession = AndroidMiddleGotApplication.getDaoSession();
+        mDaoSession = AndroidMiddleGotMvpApplication.getDaoSession();
     }
 
     public static DataManager getInstance() {
@@ -25,6 +30,10 @@ public class DataManager {
             INSTANCE = new DataManager();
         }
         return INSTANCE;
+    }
+
+    public Context getAppContext() {
+        return mAppContext;
     }
 
     //region ========== Network ==========

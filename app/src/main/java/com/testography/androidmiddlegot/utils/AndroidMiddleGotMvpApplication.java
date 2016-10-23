@@ -9,7 +9,7 @@ import com.testography.androidmiddlegot.data.storage.models.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 
-public class AndroidMiddleGotApplication extends Application {
+public class AndroidMiddleGotMvpApplication extends Application {
 
     private static Context sContext;
     private static DaoSession sDaoSession;
