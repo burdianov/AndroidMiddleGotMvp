@@ -44,7 +44,7 @@ public class SplashScreenModel implements ISplashScreenPresenterForModel {
     }
 
 
-    public void doSomething(SharedPreferences sharedPreferences) {
+    public void processData(SharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;
 
         numberOfSessions = 0;
@@ -60,7 +60,7 @@ public class SplashScreenModel implements ISplashScreenPresenterForModel {
 
         if (dbStatus != null) {
             numberOfSessions++;
-            launchMainActivity();
+            runPresenterCallback();
         } else {
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString(DB_AVAILABLE, "DB_AVAILABLE");
@@ -92,7 +92,7 @@ public class SplashScreenModel implements ISplashScreenPresenterForModel {
                         fetchSwornMembers(getSwornMembersIdFromUri
                                 (houseModelRes.getSwornMembers()), houseId, words);
 
-                        launchMainActivity();
+                        runPresenterCallback();
                     }
                 } catch (NullPointerException e) {
                     Log.e("Retrofit error: ", e.toString());
@@ -122,7 +122,7 @@ public class SplashScreenModel implements ISplashScreenPresenterForModel {
                                     (swornMemberModelRes, houseId, words);
 
                             mSwornMemberDao.insertOrReplace(swornMember);
-                            launchMainActivity();
+                            runPresenterCallback();
                         }
                     } catch (NullPointerException e) {
                         Log.e("Fetch SwornMember error", e.toString());
@@ -147,7 +147,7 @@ public class SplashScreenModel implements ISplashScreenPresenterForModel {
         return result;
     }
 
-    public void launchMainActivity() {
+    public void runPresenterCallback() {
 
         numberOfSessions--;
         if (numberOfSessions != 0 || !mIsDelayOver) {
@@ -177,7 +177,7 @@ public class SplashScreenModel implements ISplashScreenPresenterForModel {
         @Override
         protected void onPostExecute(String s) {
             mIsDelayOver = true;
-            launchMainActivity();
+            runPresenterCallback();
         }
     }
 }

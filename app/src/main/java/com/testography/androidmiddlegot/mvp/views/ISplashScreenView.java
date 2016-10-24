@@ -6,4 +6,8 @@ public interface ISplashScreenView {
     ISplashScreenPresenter getPresenter();
 
     void startMainActivityFromSplash();
+
+    void showLoad();
+
+    void hideLoad();
 }

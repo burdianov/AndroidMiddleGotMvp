@@ -45,12 +45,14 @@ public class SplashScreenPresenter implements ISplashScreenPresenter {
                 (DB_AVAILABLE, sAppContext.MODE_PRIVATE);
 
         if (NetworkStatusChecker.isNetworkAvailable(sAppContext)) {
-            mSplashScreenModel.doSomething(mSharedPreferences);
+            mSplashScreenModel.processData(mSharedPreferences);
+            mSplashScreenView.get().showLoad();
         }
     }
 
     @Override
     public void startActivity() {
+        mSplashScreenView.get().hideLoad();
         mSplashScreenView.get().startMainActivityFromSplash();
     }
 }
