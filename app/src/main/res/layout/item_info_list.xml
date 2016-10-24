@@ -8,7 +8,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:contentDescription="thumbnail"
+        android:contentDescription="@string/thumbnail"
         android:layout_width="@dimen/size_small_16"
         android:layout_height="@dimen/size_small_16"
         android:layout_marginLeft="@dimen/spacing_normal_16"

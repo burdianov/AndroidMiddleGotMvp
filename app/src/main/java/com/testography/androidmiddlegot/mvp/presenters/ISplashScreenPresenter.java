@@ -9,4 +9,6 @@ public interface ISplashScreenPresenter {
     void dropView();
 
     void initView();
+
+    void startActivity();
 }

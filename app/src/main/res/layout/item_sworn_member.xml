@@ -11,7 +11,7 @@
         android:background="@drawable/bottom_line">
 
         <ImageView
-            android:contentDescription="thumbnail"
+            android:contentDescription="@string/thumbnail"
             android:id="@+id/house_logo_iv"
             android:layout_width="@dimen/size_medium_56"
             android:layout_height="@dimen/size_medium_56"

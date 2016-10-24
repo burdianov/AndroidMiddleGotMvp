@@ -1,10 +1,12 @@
 package com.testography.androidmiddlegot.mvp.presenters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.testography.androidmiddlegot.data.managers.DataManager;
 import com.testography.androidmiddlegot.mvp.models.SplashScreenModel;
 import com.testography.androidmiddlegot.mvp.views.ISplashScreenView;
+import com.testography.androidmiddlegot.utils.NetworkStatusChecker;
 
 import java.lang.ref.WeakReference;
 
@@ -15,6 +17,9 @@ public class SplashScreenPresenter implements ISplashScreenPresenter {
 
     private SplashScreenModel mSplashScreenModel;
     private WeakReference<ISplashScreenView> mSplashScreenView;
+
+    SharedPreferences mSharedPreferences;
+    public static final String DB_AVAILABLE = "DB_AVAILABLE";
 
     private SplashScreenPresenter() {
         mSplashScreenModel = new SplashScreenModel();
@@ -36,7 +41,16 @@ public class SplashScreenPresenter implements ISplashScreenPresenter {
 
     @Override
     public void initView() {
+        mSharedPreferences = sAppContext.getSharedPreferences
+                (DB_AVAILABLE, sAppContext.MODE_PRIVATE);
 
+        if (NetworkStatusChecker.isNetworkAvailable(sAppContext)) {
+            mSplashScreenModel.doSomething(mSharedPreferences);
+        }
     }
 
+    @Override
+    public void startActivity() {
+        mSplashScreenView.get().startMainActivityFromSplash();
+    }
 }

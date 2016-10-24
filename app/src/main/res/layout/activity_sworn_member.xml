@@ -19,7 +19,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:contentDescription="thumbnail"
+                android:contentDescription="@string/thumbnail"
                 android:id="@+id/expandedImage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_collapsed_image_320"
@@ -60,7 +60,7 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:contentDescription="thumbnail"
+                    android:contentDescription="@string/thumbnail"
                     android:id="@+id/words_iv"
                     android:layout_width="@dimen/size_small_16"
                     android:layout_height="@dimen/size_small_16"
@@ -93,7 +93,7 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:contentDescription="thumbnail"
+                    android:contentDescription="@string/thumbnail"
                     android:id="@+id/born_iv"
                     android:layout_width="@dimen/size_small_16"
                     android:layout_height="@dimen/size_small_16"
@@ -126,7 +126,7 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:contentDescription="thumbnail"
+                    android:contentDescription="@string/thumbnail"
                     android:id="@+id/titles_iv"
                     android:layout_width="@dimen/size_small_16"
                     android:layout_height="@dimen/size_small_16"
@@ -160,7 +160,7 @@
 
 
                 <ImageView
-                    android:contentDescription="thumbnail"
+                    android:contentDescription="@string/thumbnail"
                     android:id="@+id/aliases_iv"
                     android:layout_width="@dimen/size_small_16"
                     android:layout_height="@dimen/size_small_16"

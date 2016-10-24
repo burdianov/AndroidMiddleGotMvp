@@ -11,5 +11,6 @@
     <string name="titles">Titles</string>
     <string name="aliases">Aliases</string>
     <string name="name">Name</string>
+    <string name="thumbnail">Thumbnail</string>
     <string name="lorem_ipsum">Aliquam consectetur eleifend pharetra. Nunc pellentesque justo.</string>
 </resources>

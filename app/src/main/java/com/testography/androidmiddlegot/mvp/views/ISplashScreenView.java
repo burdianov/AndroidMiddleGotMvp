@@ -5,4 +5,5 @@ import com.testography.androidmiddlegot.mvp.presenters.ISplashScreenPresenter;
 public interface ISplashScreenView {
     ISplashScreenPresenter getPresenter();
 
+    void startMainActivityFromSplash();
 }
