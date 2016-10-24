@@ -83,7 +83,7 @@ public class HouseFragment extends Fragment implements IHouseFragmentView {
         }
 
         mSwornMembersAdapter = new SwornMembersAdapter((MainActivity) getActivity(),
-                names, remoteIds);
+                names, remoteIds, mHouseNumber);
         mRecyclerView.setAdapter(mSwornMembersAdapter);
     }
 

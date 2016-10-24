@@ -20,11 +20,10 @@
 
             <ImageView
                 android:contentDescription="@string/thumbnail"
-                android:id="@+id/expandedImage"
+                android:id="@+id/expanded_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_collapsed_image_320"
                 android:scaleType="centerCrop"
-                android:src="@drawable/house_placeholder"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"/>
 

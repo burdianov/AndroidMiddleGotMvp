@@ -20,18 +20,20 @@ public class SwornMembersAdapter extends RecyclerView.Adapter<SwornMembersAdapte
     private MainActivity mMainActivity;
     private List<String> mSwornMembers;
     private List<String> mRemoteIds;
+    private int mHouseNumber;
 
     public SwornMembersAdapter(MainActivity mainActivity, List<String>
-            swornMembers, List<String> remoteIds) {
+            swornMembers, List<String> remoteIds, int houseNumber) {
 
         mMainActivity = mainActivity;
         mSwornMembers = swornMembers;
         mRemoteIds = remoteIds;
+        mHouseNumber = houseNumber;
     }
 
     @Override
-    public SwornMembersAdapter.SwornMemberViewHolder onCreateViewHolder(ViewGroup
-                                                                                parent, int viewType) {
+    public SwornMembersAdapter.SwornMemberViewHolder onCreateViewHolder(
+            ViewGroup parent, int viewType) {
         View convertView = LayoutInflater.from(parent.getContext()).inflate(R
                 .layout.item_sworn_member, parent, false);
 
@@ -43,6 +45,7 @@ public class SwornMembersAdapter extends RecyclerView.Adapter<SwornMembersAdapte
         holder.mSwornMemberName.setText(mSwornMembers.get(position));
         holder.mInfo.setText(R.string.lorem_ipsum);
         holder.remoteId = mRemoteIds.get(position);
+        holder.houseNumber = mHouseNumber;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class SwornMembersAdapter extends RecyclerView.Adapter<SwornMembersAdapte
         private TextView mInfo;
         private ImageView mHouseLogo;
         private String remoteId;
+        private int houseNumber;
 
         public SwornMemberViewHolder(View itemView, MainActivity mainActivity) {
             super(itemView);
@@ -74,6 +78,7 @@ public class SwornMembersAdapter extends RecyclerView.Adapter<SwornMembersAdapte
         public void onClick(View v) {
             Intent intent = new Intent(mActivity, SwornMemberActivity.class);
             intent.putExtra("remoteId", remoteId);
+            intent.putExtra("houseNumber", houseNumber);
             mActivity.startActivity(intent);
         }
     }

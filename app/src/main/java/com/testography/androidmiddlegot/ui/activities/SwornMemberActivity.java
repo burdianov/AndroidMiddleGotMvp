@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.testography.androidmiddlegot.R;
@@ -13,6 +14,7 @@ import com.testography.androidmiddlegot.data.storage.models.SwornMember;
 import com.testography.androidmiddlegot.mvp.presenters.ISwornMemberPresenter;
 import com.testography.androidmiddlegot.mvp.presenters.SwornMemberPresenter;
 import com.testography.androidmiddlegot.mvp.views.ISwornMemberView;
+import com.testography.androidmiddlegot.utils.ConstantsManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +42,6 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
     @BindView(R.id.mother_name)
     TextView mMother;
 
-    private String mRemoteId;
-    private String mDied;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -51,6 +50,13 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
+
+    @BindView(R.id.expanded_image)
+    ImageView mExpandedImage;
+
+    private String mRemoteId;
+    private String mDied;
+    private int mHouseNumber;
 
     //region ========== Activity Lifecycle ==========
 
@@ -61,6 +67,19 @@ public class SwornMemberActivity extends BaseActivity implements ISwornMemberVie
         ButterKnife.bind(this);
 
         mRemoteId = getIntent().getStringExtra("remoteId");
+        mHouseNumber = getIntent().getExtras().getInt("houseNumber");
+
+        switch (mHouseNumber) {
+            case ConstantsManager.houseOne:
+                mExpandedImage.setImageResource(R.drawable.house_lannister);
+                break;
+            case ConstantsManager.houseTwo:
+                mExpandedImage.setImageResource(R.drawable.house_stark);
+                break;
+            case ConstantsManager.houseThree:
+                mExpandedImage.setImageResource(R.drawable.house_targaryen);
+                break;
+        }
 
         mDied = "";
 
