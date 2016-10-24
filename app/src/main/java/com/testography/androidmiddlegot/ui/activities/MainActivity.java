@@ -16,9 +16,7 @@ import com.testography.androidmiddlegot.mvp.presenters.IMainPresenter;
 import com.testography.androidmiddlegot.mvp.presenters.MainPresenter;
 import com.testography.androidmiddlegot.mvp.views.IMainView;
 import com.testography.androidmiddlegot.ui.adapters.ViewPagerAdapter;
-import com.testography.androidmiddlegot.ui.fragments.HouseOneFragment;
-import com.testography.androidmiddlegot.ui.fragments.HouseThreeFragment;
-import com.testography.androidmiddlegot.ui.fragments.HouseTwoFragment;
+import com.testography.androidmiddlegot.ui.fragments.HouseFragment;
 import com.testography.androidmiddlegot.utils.ConstantsManager;
 
 import butterknife.BindView;
@@ -76,9 +74,15 @@ public class MainActivity extends BaseActivity implements IMainView {
     public void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new HouseOneFragment(), ConstantsManager.houseOneName);
-        adapter.addFragment(new HouseTwoFragment(), ConstantsManager.houseTwoName);
-        adapter.addFragment(new HouseThreeFragment(), ConstantsManager.houseThreeName);
+        adapter.addFragment(HouseFragment.newInstance(ConstantsManager.houseOne),
+                ConstantsManager.houseOneName);
+        adapter.addFragment(HouseFragment.newInstance(ConstantsManager.houseTwo),
+                ConstantsManager.houseTwoName);
+        adapter.addFragment(HouseFragment.newInstance(ConstantsManager.houseThree),
+                ConstantsManager.houseThreeName);
+//        adapter.addFragment(new HouseOneFragment(), ConstantsManager.houseOneName);
+//        adapter.addFragment(new HouseTwoFragment(), ConstantsManager.houseTwoName);
+//        adapter.addFragment(new HouseThreeFragment(), ConstantsManager.houseThreeName);
 
         mViewPager.setAdapter(adapter);
     }

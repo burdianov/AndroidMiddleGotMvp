@@ -6,7 +6,7 @@
     <item>
         <bitmap
             android:gravity="fill_horizontal|fill_vertical"
-            android:src="@drawable/splash"/>
+            android:src="@drawable/splash_bg"/>
     </item>
 
 </layer-list>

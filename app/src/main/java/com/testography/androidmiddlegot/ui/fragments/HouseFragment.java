@@ -16,12 +16,11 @@ import com.testography.androidmiddlegot.data.storage.models.SwornMember;
 import com.testography.androidmiddlegot.data.storage.models.SwornMemberDao;
 import com.testography.androidmiddlegot.ui.activities.MainActivity;
 import com.testography.androidmiddlegot.ui.adapters.SwornMembersAdapter;
-import com.testography.androidmiddlegot.utils.ConstantsManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseOneFragment extends Fragment {
+public class HouseFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -29,8 +28,26 @@ public class HouseOneFragment extends Fragment {
 
     private DaoSession mDaoSession;
 
-    public HouseOneFragment() {
+    private int mHouseNumber;
 
+    public HouseFragment() {
+
+    }
+
+    public static HouseFragment newInstance(int houseNumber) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("houseNumber", houseNumber);
+
+        HouseFragment fragment = new HouseFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            mHouseNumber = bundle.getInt("houseNumber");
+        }
     }
 
     @Override
@@ -42,9 +59,9 @@ public class HouseOneFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_house_one, container,
+        View rootView = inflater.inflate(R.layout.fragment_house, container,
                 false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_one);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
         mDaoSession = DataManager.getInstance().getDaoSession();
 
@@ -55,8 +72,10 @@ public class HouseOneFragment extends Fragment {
         List<String> names = new ArrayList<>();
         List<String> remoteIds = new ArrayList<>();
 
+        readBundle(getArguments());
+
         List<SwornMember> membersList = getSwornMembersFromDb(String
-                .valueOf(ConstantsManager.houseOne));
+                .valueOf(mHouseNumber));
 
         for (SwornMember member :
                 membersList) {
