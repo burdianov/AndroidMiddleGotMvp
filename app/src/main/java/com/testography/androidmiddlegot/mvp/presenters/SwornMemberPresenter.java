@@ -48,6 +48,6 @@ public class SwornMemberPresenter implements ISwornMemberPresenter {
 
     @Override
     public SwornMember getSwornMember() {
-        return null;
+        return mSwornMember;
     }
 }

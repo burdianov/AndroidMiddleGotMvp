@@ -80,9 +80,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                 ConstantsManager.houseTwoName);
         adapter.addFragment(HouseFragment.newInstance(ConstantsManager.houseThree),
                 ConstantsManager.houseThreeName);
-//        adapter.addFragment(new HouseOneFragment(), ConstantsManager.houseOneName);
-//        adapter.addFragment(new HouseTwoFragment(), ConstantsManager.houseTwoName);
-//        adapter.addFragment(new HouseThreeFragment(), ConstantsManager.houseThreeName);
 
         mViewPager.setAdapter(adapter);
     }

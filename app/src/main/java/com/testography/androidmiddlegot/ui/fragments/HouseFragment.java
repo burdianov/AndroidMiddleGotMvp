@@ -10,23 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.testography.androidmiddlegot.R;
-import com.testography.androidmiddlegot.data.managers.DataManager;
-import com.testography.androidmiddlegot.data.storage.models.DaoSession;
 import com.testography.androidmiddlegot.data.storage.models.SwornMember;
-import com.testography.androidmiddlegot.data.storage.models.SwornMemberDao;
+import com.testography.androidmiddlegot.mvp.presenters.HouseFragmentPresenter;
+import com.testography.androidmiddlegot.mvp.presenters.IHouseFragmentPresenter;
+import com.testography.androidmiddlegot.mvp.views.IHouseFragmentView;
 import com.testography.androidmiddlegot.ui.activities.MainActivity;
 import com.testography.androidmiddlegot.ui.adapters.SwornMembersAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseFragment extends Fragment {
+public class HouseFragment extends Fragment implements IHouseFragmentView {
+
+    private IHouseFragmentPresenter mHouseFragmentPresenter =
+            HouseFragmentPresenter.getInstance();
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private SwornMembersAdapter mSwornMembersAdapter;
-
-    private DaoSession mDaoSession;
 
     private int mHouseNumber;
 
@@ -44,16 +45,9 @@ public class HouseFragment extends Fragment {
         return fragment;
     }
 
-    private void readBundle(Bundle bundle) {
-        if (bundle != null) {
-            mHouseNumber = bundle.getInt("houseNumber");
-        }
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -63,22 +57,27 @@ public class HouseFragment extends Fragment {
                 false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
-        mDaoSession = DataManager.getInstance().getDaoSession();
+        readBundle(getArguments());
+        mHouseFragmentPresenter.takeView(this);
+        mHouseFragmentPresenter.initView(mHouseNumber);
 
+        return rootView;
+    }
+
+    @Override
+    public void setupRecyclerView() {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
+    public void setupRecyclerViewAdapter(List<SwornMember> membersList) {
 
         List<String> names = new ArrayList<>();
         List<String> remoteIds = new ArrayList<>();
 
-        readBundle(getArguments());
-
-        List<SwornMember> membersList = getSwornMembersFromDb(String
-                .valueOf(mHouseNumber));
-
-        for (SwornMember member :
-                membersList) {
+        for (SwornMember member : membersList) {
             names.add(member.getName());
             remoteIds.add(member.getRemoteId());
         }
@@ -86,22 +85,21 @@ public class HouseFragment extends Fragment {
         mSwornMembersAdapter = new SwornMembersAdapter((MainActivity) getActivity(),
                 names, remoteIds);
         mRecyclerView.setAdapter(mSwornMembersAdapter);
-
-        return rootView;
     }
 
-    private List<SwornMember> getSwornMembersFromDb(String houseId) {
-        List<SwornMember> membersList = new ArrayList<>();
-
-        try {
-            membersList = mDaoSession.queryBuilder(SwornMember.class)
-                    .where(SwornMemberDao.Properties.HouseRemoteId.eq(houseId))
-                    .orderDesc(SwornMemberDao.Properties.Name)
-                    .build()
-                    .list();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            mHouseNumber = bundle.getInt("houseNumber");
         }
-        return membersList;
+    }
+
+    @Override
+    public int getHouseNumber() {
+        return mHouseNumber;
+    }
+
+    @Override
+    public IHouseFragmentPresenter getPresenter() {
+        return mHouseFragmentPresenter;
     }
 }
