@@ -59,6 +59,7 @@ public class SplashScreenActivity extends BaseActivity implements ISplashScreenV
         if (mProgressDialog != null) {
             if (mProgressDialog.isShowing()) {
                 mProgressDialog.hide();
+                mProgressDialog.dismiss();
             }
         }
     }
